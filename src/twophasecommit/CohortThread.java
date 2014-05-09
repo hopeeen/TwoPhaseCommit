@@ -37,8 +37,13 @@ public class CohortThread extends Thread {
             writer = new PrintWriter(clientSocket.getOutputStream(), true);
             String line;
 
-
             try {
+                if (server.isLocked()) {
+                    writer.println("abort");
+                }else{
+                    server.setLock(true);
+                }
+
                 line = reader.readLine();
 
                 double parsedInValue = parseTransaction(line);
@@ -55,14 +60,15 @@ public class CohortThread extends Thread {
                     server.balance += parsedInValue;
                     System.out.println(server.balance);
                     writer.println("ack");
+                    server.setLock(false);
                 }else if (line.equals("rollback")) {
-                    System.out.println("Rollback :)");
+                    server.setLock(false);
                 }
 
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
+            server.setLock(false);
             System.out.println("Closing connection");
             reader.close();
             writer.close();

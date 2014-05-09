@@ -11,6 +11,7 @@ public class Cohort {
     private List<CohortThread> threadList;
     private List<String> log;
     private boolean accepting = true;
+    private static boolean locked = false;
     public double balance;
     public String name;
 
@@ -19,6 +20,14 @@ public class Cohort {
         log = new ArrayList<String>();
         this.balance = initBalance;
         this.name = name;
+    }
+
+    public synchronized void setLock(boolean lock) {
+        locked = lock;
+    }
+
+    public boolean isLocked(){
+        return locked;
     }
 
     public static void main(String[] args) throws IOException {
