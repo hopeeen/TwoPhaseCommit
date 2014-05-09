@@ -52,6 +52,16 @@ public class CohortThread extends Thread {
                     writer.println("abort");
                 }
 
+                line = reader.readLine();
+
+                if(line.equals("global_commit")) {
+                    server.balance += parsedInValue;
+                    System.out.println(server.balance);
+                    writer.println("ack");
+                }else if (line.equals("rollback")) {
+                    System.out.println("Rollback :)");
+                }
+
             } catch (ParseException e) {
                 e.printStackTrace();
             }
