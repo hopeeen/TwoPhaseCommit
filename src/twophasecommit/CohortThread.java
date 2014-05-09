@@ -19,7 +19,7 @@ public class CohortThread extends Thread {
 
     private boolean verifyTransaction(double transactionValue) {
         double balanceCopy = server.balance;
-        if ((balanceCopy + transactionValue) > 0) {
+        if ((balanceCopy + transactionValue) >= 0) {
             return true;
         } else return false;
     }
