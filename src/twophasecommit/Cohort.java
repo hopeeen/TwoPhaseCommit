@@ -3,6 +3,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 
 public class Cohort {
@@ -21,9 +22,11 @@ public class Cohort {
     }
 
     public static void main(String[] args) throws IOException {
-        final int PORTNR = 1250;
+        System.out.println("Please enter port number. (Must be different if running two clients on localhost)");
+        Scanner scanner = new Scanner(System.in);
+        int portNr = Integer.parseInt(scanner.nextLine());
+        final int PORTNR = portNr;
 
-        //Socket cSocket = null;
         ServerSocket serverSocket = null;
         double init = 499;
         String name = "Account 1";
