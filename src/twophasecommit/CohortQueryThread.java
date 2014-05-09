@@ -12,12 +12,13 @@ public class CohortQueryThread extends Thread {
     Socket connection;
     String query;
     int numberOfCommits;
-    static AtomicInteger numberOfYesVotes = new AtomicInteger();
+    AtomicInteger numberOfYesVotes;
 
-    public CohortQueryThread(Socket connection, String query, int numberOfCommits) {
+    public CohortQueryThread(Socket connection, String query, int numberOfCommits, AtomicInteger numberOfYesVotes) {
         this.connection = connection;
         this.query = query;
         this.numberOfCommits = numberOfCommits;
+        this.numberOfYesVotes = numberOfYesVotes;
     }
 
     @Override
@@ -48,7 +49,7 @@ public class CohortQueryThread extends Thread {
                             throw new IOException("Voting failed, sleep was interrupted");
                         }
 
-                        if (System.currentTimeMillis() - time > 60000) {
+                        if (System.currentTimeMillis() - time > 6000) {
                             System.out.println("Number of yes votes when timing out is: " + numberOfYesVotes.get());
                             numberOfYesVotes.set(-1);
                             throw new IOException("Voting timed out");
