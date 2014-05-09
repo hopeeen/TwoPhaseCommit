@@ -35,10 +35,7 @@ public class CohortThread extends Thread {
             InputStreamReader iReader = new InputStreamReader(clientSocket.getInputStream());
             BufferedReader reader = new BufferedReader(iReader);
             writer = new PrintWriter(clientSocket.getOutputStream(), true);
-            //writer.println("Transaction detected on " + server.name + " " + "current balance is " + server.balance);
-
-            //writer.println("You have connected");
-            String line = null;
+            String line;
 
 
             try {
@@ -66,16 +63,6 @@ public class CohortThread extends Thread {
                 e.printStackTrace();
             }
 
-            while(line != null) {
-                System.out.println(line);
-
-                try {
-                    line = reader.readLine();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
             System.out.println("Closing connection");
             reader.close();
             writer.close();
@@ -83,7 +70,7 @@ public class CohortThread extends Thread {
 
 
         } catch (IOException e) {
-
+            e.printStackTrace();
         }
     }
 }
