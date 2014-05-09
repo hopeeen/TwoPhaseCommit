@@ -1,8 +1,8 @@
 import java.net.Socket;
-import java.util.Scanner;
 
 /**
  * Created by Petter on 09/05/14.
+ *
  */
 public class TransactionManager {
 

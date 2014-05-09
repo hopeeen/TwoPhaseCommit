@@ -4,8 +4,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Petter on 08/05/14.
- * <p/>
- * This class connects to the cohorts. There is one for each query.
+ *
+ * This class connects to the cohorts. There is one for each qu.
+ *
  */
 public class CohortQueryThread extends Thread {
     Socket connection;
