@@ -38,17 +38,11 @@ public class CohortThread extends Thread {
             String line;
 
             try {
-                if (server.isLocked()) {
-                    writer.println("abort");
-                }else{
-                    server.setLock(true);
-                }
-
                 line = reader.readLine();
-
                 double parsedInValue = parseTransaction(line);
 
-                if (verifyTransaction(parsedInValue)) {
+                if (verifyTransaction(parsedInValue) && !server.isLocked()) {
+                    server.setLock(true);
                     writer.println("commit");
                 } else {
                     writer.println("abort");
