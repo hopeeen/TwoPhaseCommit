@@ -58,6 +58,10 @@ public class CohortQueryThread extends Thread {
 
                     if (numberOfYesVotes.get() == numberOfCommits) {
                         writer.println("commit");
+                        String acknowledgementInput = bufferedReader.readLine();
+                        if (acknowledgementInput.equals("acknowledgement")){
+                            System.out.println("A cohort successfully executed a query");
+                        }
                     } else {
                         numberOfYesVotes.set(-1);
                         throw new IOException("Voting is fucked. There are more votes than commits. Probably. Shieet.");
