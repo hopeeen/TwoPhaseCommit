@@ -5,14 +5,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Created by Petter on 08/05/14.
  *
- * This class connects to the cohorts. There is one for each qu.
+ * This class connects to the cohorts. There is one for each query.
  *
  */
 public class CohortQueryThread extends Thread {
     Socket connection;
     String query;
     int numberOfCommits;
-    private AtomicInteger numberOfYesVotes = new AtomicInteger();
+    static AtomicInteger numberOfYesVotes = new AtomicInteger();
 
     public CohortQueryThread(Socket connection, String query, int numberOfCommits) {
         this.connection = connection;
@@ -49,6 +49,7 @@ public class CohortQueryThread extends Thread {
                         }
 
                         if (System.currentTimeMillis() - time > 60000) {
+                            System.out.println("Number of yes votes when timing out is: " + numberOfYesVotes.get());
                             numberOfYesVotes.set(-1);
                             throw new IOException("Voting timed out");
                         } else if (numberOfYesVotes.get() < 0) {
@@ -58,9 +59,9 @@ public class CohortQueryThread extends Thread {
                     }
 
                     if (numberOfYesVotes.get() == numberOfCommits) {
-                        writer.println("commit");
+                        writer.println("global_commit");
                         String acknowledgementInput = bufferedReader.readLine();
-                        if (acknowledgementInput.equals("acknowledgement")){
+                        if (acknowledgementInput.equals("acknowledged")){
                             System.out.println("A cohort successfully executed a query");
                         }
                     } else {
