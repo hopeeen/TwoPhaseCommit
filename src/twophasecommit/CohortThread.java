@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.Socket;
+import java.text.ParseException;
 
 /**
  * Created by martinhagerup on 08.05.14.
@@ -16,23 +17,42 @@ public class CohortThread extends Thread {
         this.server = server;
     }
 
+    private boolean verifyTransaction(double transactionValue) {
+        double balanceCopy = server.balance;
+        if ((balanceCopy + transactionValue) > 0) {
+            return true;
+        } else return false;
+    }
+
+    private double parseTransaction(String value) throws ParseException {
+        double parsedDouble = Double.parseDouble(value);
+        return parsedDouble;
+    }
+
     @Override
     public void run() {
         try {
             InputStreamReader iReader = new InputStreamReader(clientSocket.getInputStream());
             BufferedReader reader = new BufferedReader(iReader);
             writer = new PrintWriter(clientSocket.getOutputStream(), true);
-            writer.println("Transaction detected on " + server.name + " " + "current balance is " + server.balance);
+            //writer.println("Transaction detected on " + server.name + " " + "current balance is " + server.balance);
 
-            System.out.println("Hello!");
-            writer.println("You have connected");
-            writer.println("You have connected. Yes");
+            //writer.println("You have connected");
             String line = null;
 
 
             try {
                 line = reader.readLine();
-            } catch (IOException e) {
+
+                double parsedInValue = parseTransaction(line);
+
+                if (verifyTransaction(parsedInValue)) {
+                    writer.println("commit");
+                } else {
+                    writer.println("abort");
+                }
+
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
 
