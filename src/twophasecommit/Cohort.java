@@ -23,7 +23,7 @@ public class Cohort {
     public static void main(String[] args) throws IOException {
         final int PORTNR = 1250;
 
-        Socket cSocket = null;
+        //Socket cSocket = null;
         ServerSocket serverSocket = null;
         double init = 499;
         String name = "Account 1";
@@ -35,25 +35,24 @@ public class Cohort {
             e.printStackTrace();
         }
 
-        while(server.accepting) {
+        while (server.accepting) {
             try {
-                cSocket = serverSocket.accept();
+                Socket cSocket = serverSocket.accept();
                 CohortThread cThread = new CohortThread(server, cSocket);
                 server.threadList.add(cThread);
                 System.out.println("Added a new client.");
                 server.log.add("NOT_SENT");
-
                 cThread.start();
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
 
-            try {
-                serverSocket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

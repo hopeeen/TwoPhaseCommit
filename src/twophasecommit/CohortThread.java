@@ -1,6 +1,4 @@
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -10,7 +8,6 @@ public class CohortThread extends Thread {
 
     private Socket clientSocket = null;
     private Cohort server = null;
-    private DataInputStream inputStream = null;
     private PrintWriter writer = null;
 
 
@@ -19,12 +16,40 @@ public class CohortThread extends Thread {
         this.server = server;
     }
 
+    @Override
     public void run() {
         try {
-            inputStream = new DataInputStream(clientSocket.getInputStream());
-            writer = new PrintWriter(clientSocket.getOutputStream());
-            writer.println("Transaction initiated on " + server.name + " " + "current balance is " + server.balance);
-            
+            InputStreamReader iReader = new InputStreamReader(clientSocket.getInputStream());
+            BufferedReader reader = new BufferedReader(iReader);
+            writer = new PrintWriter(clientSocket.getOutputStream(), true);
+            writer.println("Transaction detected on " + server.name + " " + "current balance is " + server.balance);
+
+            System.out.println("Hello!");
+            writer.println("You have connected");
+            writer.println("You have connected. Yes");
+            String line = null;
+
+
+            try {
+                line = reader.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            while(line != null) {
+                System.out.println(line);
+
+                try {
+                    line = reader.readLine();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            System.out.println("Closing connection");
+            reader.close();
+            writer.close();
+            clientSocket.close();
 
 
         } catch (IOException e) {
